@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <meta charset="UTF8"/>
+        <title>Contrôle TP JavaScript (mars 2017)</title>
+    </head>
+    <body>
+        <h1>Contrôle TP JavaScript (mars 2017)</h1>
+        <p>
+L'objectif de ce contrôle TP est de réaliser une simulation de co-évolution d'une population de proies et d'une population de prédateurs. La simulation se déroule sur un espace à 2 dimensions, constitué de cellules pouvant contenir un poisson, un requin, ou rien du tout. 
+<p style="color:blue;">
+<b>Déposer dans moodle le fichier Groupe_NOM_Prenom.html que vous aurez renommé avant la fin des 2h de ce contrôle TP.</b>
+</p>
+Il vous faudra commencer par écrire les fonctions permettant la création et l'initialisation de la grille, puis vous devrez créer les principaux acteurs de la simulation: les poissons et les requins. 
+La dernière partie, qui est optionnelle, consiste à réaliser une interface graphique plus évoluée à l'aide de la balise <tt>canvas</tt>.
+        </p>
+        <h2>Création et initialisation de la structure de données</h2>
+        <p>
+On se propose de réaliser cette simulation à l'aide d'un tableau à deux dimensions. Pour une case vide, il est possible d'utiliser la constante <tt>undefined</tt>, puis nous définirons ensuite des objets pour représenter les poissons et requins.
+            <ul>
+                <li><b>Q1:</b> Définissez une fonction <tt>createWorld(line, column)</tt> qui retourne un tableau à deux dimensions constitué de <tt>line</tt> lignes et <tt>column</tt> colonnes dont chacune des cases contient la valeur <tt>undefined</tt>.</li>
+                <li><b>Q2:</b> Définissez une fonction <tt>createTable(world)</tt> qui prend en paramètre le tableau créé grace à la fonction <tt>createWorld</tt> et génère un tableau dans la <tt>DIV</tt> d'identifiant <tt>text_screen</tt> et dont les cellules contiennent le caractère <tt>u</tt>. Comme on souhaite pouvoir accéder directement à n'importe laquelle des cellulles, vous veillerez à choisir judicieusement leur identifiant afin de pouvoir les adresser facilement à l'aide de coordonnées <tt>(line, column)</tt>.</li>
+                <li><b>Q3:</b> Définissez maintenant une fonction <tt>affiche(world)</tt> qui prend en paramètre notre structure de données et l'affiche dans la <tt>DIV</tt> d'identifiant <tt>text_screen</tt>. Pour l'instant, on se contentera d'afficher le sympbole <tt>~</tt>si la cellule contient la valeur <tt>undefined</tt> (ce qui est le cas pour toutes les cases de notre grille ...).</li>
+            </ul>
+Maintenant que vous disposez des primitives de création de l'état initial et de son  affichage, nous allons ajouter un peu de vie à notre simulation.
+        </p>
+        <h2>Création des poissons</h2>
+        <p>
+La première entité que nous allons définir est le poisson. Son comportement est simple: il se déplace aléatoirement dans l'environnement dans l'une des 8 cases adjacentes (voisinage de Moore comme dans le jeu de la vie).
+            <ul>
+                <li><b>Q4:</b> Afin de ne pas être embêté par les bords, définissez une fonction <tt>valide(line, column)</tt> qui retourne <tt>true</tt> si les coordonnées sont valides (c'est-à-dire contenues dans la grille) et <tt>false</tt> sinon.</li>
+                <li><b>Q5:</b> Définissez une fonction <tt>freeCell(line, column)</tt> qui retourne un tableau contenant deux valeurs représentant un indice de ligne et de colonne d'une cellule vide (ie. cellule contenant la valeur <tT>undefined</tT> autour de la cellule de coordonnées <tt>(line, column)</tt>). Si aucune cellule n'est libre, la fonction devra retourner <tt>null</tt>. Il est utile de se remémorer le calcul des voisins dans le jeu de la vie pour cette question ...</li>
+            </ul>
+<b>INFORMATION:</b> <tt>Math.random()</tt> correspond exactement à son équivalent en Java. Pour tronquer un nombre réel en un entier, il faut utiliser <tt>Math.floor(nb)</tt>.
+        </p>
+        <p>
+Nous pouvons maintenant nous attaquer à la création d'un poisson, qui sera caractérisé par sa position sur la grille et ne possédera qu'une méthode <tt>act()</tt> qui pour l'instant cherchera une case libre à proximité de lui et se déplacera dedans (réutilisez bien sûr la fonction <tt>freeCell</tt>). Voici le squelette que nous vous proposons d'utiliser:
+        </p>
+<pre>
+// le constructeur prend en paramètre la position initiale du poisson (ligne,colonne)
+// et rajoute ce nouveau poisson à la liste des poissons 'fishes'
+var Fish = function(line, column) {
+   // à compléter
+};
+                    
+Fish.prototype.act = function() {
+    // Recherche une case libre
+    // si il y en a une, se déplace vers une des cases libres
+    // sinon, reste sur place
+}
+</pre>
+<p>
+Vous pouvez tester votre code en créant une variable contenant un poisson: <tt>var f = new Fish(5,5);</tt> puis en exécutant plusieurs fois dans la console JS la ligne de commande suivante: <tt>f.act(); affiche(world);</tt>. Vous devriez normalement voir le poisson se déplacer sur la grille. N'oubliez pas de modifier votre fonction <tt>affiche</tt> afin d'afficher un symbole différent de <tt>~</tt> lorsqu'une case contient un poisson (pensez à l'instruction <tt>instanceof</tt>!).
+</p>
+<p>
+Afin de faire tourner la simulation, ajoutons quelques contrôleurs de création de nouveaux poissons et d'exécution d'un pas de simulation.
+<ul>
+    <li><b>Q6:</b> Définissez le gestionnaire lié au bouton <tt>addFish</tt> qui tire aléatoirement des coordonnées et crée un nouveau poisson à cette coordonnée puis l'ajoute dans la liste <tt>fishes</tt>.</li>
+    <li><b>Q7:</b> Définissez ensuite le gestionnaire lié au bouton <tt>step</tt> qui parcourt la liste <tt>fishes</tt> et invoque la méthode <tt>act</tt> sur chacun d'entre eux avant de procéder à un affichage de la grille.</li>
+    <li><b>Q8:</b> Ajoutez finalement une nouvelle fonction <tt>updateFishNumber</tt> qui met à jour le nombre de poissons affichés au dessus de la grille. Cette fonction doit être appelée dans les deux gestionnaires d'évènements que vous venez de définir.</li>
+</ul>
+</p>
+        <h2>La création des requins</h2>
+<p>
+Nous allons pouvoir maintenant introduire nos prédateurs: les requins. Afin de vous faciliter la tâche, nous ne procéderons pas par héritage. Créez un type <tt>Shark</tt> en copiant le travail réalisé sur <tt>Fish</tt>. Les différences se trouveront au niveau de la méthode <tt>act()</tt>. Il faudra aussi modifier <tt>affiche</tt> afin de le rendre plus générique (par exemple en ajoutant un attribut <tt>symbol</tt> à <tt>Fish</tt> et <tt>Shark</tt> afin de définir le symbole qu'affichera la fonction <tt>affiche</tt>).
+<ul>
+    <li><b>Q9:</b> Définissez le type <tt>Shark</tt> en recopiant le travail réalisé pour <tt>Fish</tt> et profitez-en pour ajouter un attribut <tt>symbol</tt> à ces deux types.</li>
+    <li><b>Q10:</b> Modifier <tt>affiche</tt> afin qu'en fonction du contenu d'une case de la grille, le caractère <tt>~</tt> soit affiché pour une case contenant <tt>undefined</tt>, ou le symbol défini par <tt>Fish</tt> ou <tt>Shark</tt>.</li>
+    <li><b>Q11:</b> Modifiez le gestionnaire d'évènement du pas de simulation pour que les requins se déplacent aussi (par convention, supposons que les poissons se déplacent avant les requins) et que les compteurs du nombres de requins et poissons soient aussi à jour.</li>
+    <li><b>Q12:</b> Modifiez la définition du comportement d'un requin en changeant la méthode <tt>act</tt> afin que le requin recherche dans un premier temps un poisson dans son voisinage et le mange si il le trouve (ne pas oublier d'enlever le poisson de la liste <tt>fishes</tt>), et sinon se déplace aléatoirement dans une case libre à proximité.</li>
+</ul>
+</p>
+
+<h2>Comportements de reproduction (OPTIONNEL)</h2>
+<p>
+Pour observer la co-évolution des deux populations, il est nécessaire d'ajouter quelques caractéristiques supplémentaires à nos entités: la reproduction et la mort par famine. Les poissons et les requins peuvent se reproduire, par contre, dans cette simulation simplifiée, les poissons ne peuvent mourir que si ils sont mangés par un requin, tandis que ces derniers meurent de famine si ils ne mangent pas de poissons assez rapidement.
+<ul>
+    <li><b>Q13:</b> ajoutez des variables globales <tt>FISH_REPRODUCE</tt> et <tt>SHARK_REPRODUCE</tt> qui définissent le temps de gestation de ces deux espèces,</li>
+    <li><b>Q14:</b> ajoutez des attributs <tt>gestation</tt> au type poisson et requin. Cet attribut servira de compteur et lorsqu'il atteindra la valeur des constants définies en Q13, l'entité se reproduira dans une des cases libres de son voisinage (il faudra penser à modifier la méthode <tt>act</tt>)</li>
+    <li><b>Q15:</b> finalement, ajoutez une variable globale <tt>SHARK_STARVATION</tt> qui définit le nombre de pas de simulation durant lequel un requin peut survivre sans se nourrir ainsi qu'un attribut <tt>starvation</tt> dans le requin. Cet attribut est réinitialisé à zéro à chaque fois qu'un requin mange un poisson et sinon est incrémenté à chaque pas de simulation. Si cet attribut atteint la valeur de la constante <tt>STARK_STARVATION</tt> alors le requin meurt de famine (il faut donc modifier de nouveau la méthode <tt>act</tt> pour implémenter ce comportement).</li>
+</ul>
+</p>
+
+<h2>Une IHM plus évoluée (OPTIONNEL)</h2>
+<p>
+Cette partie est optionnelle, mais si vous avez du temps, essayez d'améliorer l'interface graphique de la simulation en exploitant la balise <tt>canvas</tt>. Vous pouvez pour cela vous inspirer soit du jeu de la vie en mode graphique (en représentant les entités par de simples carrés et en utilisant deux couleurs différentes pour les poissons et requins), soit en partant sur une approche similaire au jeu d'échec et en utilisant une image pour représenter les poissons et requins.
+</p>
+    </body>
+</html>
