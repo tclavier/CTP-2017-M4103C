@@ -1,0 +1,20 @@
+{
+  "name": "my-tp",
+  "version": "1.0.0",
+  "description": "Description of TP",
+  "homepage": "https://github.com/user/my-tp",
+  "private": true,
+  "license": "CC-BY-SA-4.0",
+  "scripts": {
+    "test": "NODE_PATH=./src mocha --recursive",
+    "test:watch": "NODE_PATH=./src mocha --watch"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": "6.9.4",
+    "npm": "3.10.8"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  }
+}
