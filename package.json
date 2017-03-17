@@ -9,7 +9,9 @@
     "test": "NODE_PATH=./src mocha --recursive",
     "test:watch": "NODE_PATH=./src mocha --watch"
   },
-  "dependencies": {},
+  "dependencies": {
+    "jsdom": "^9.12.0"
+  },
   "engines": {
     "node": "6.9.4",
     "npm": "3.10.8"
