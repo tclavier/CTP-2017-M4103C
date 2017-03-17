@@ -21,7 +21,7 @@ var buildHtmlLine = function(line, line_number) {
   var html_line = document.createElement('tr');
   for (var cell_id = 0; cell_id < line.length; cell_id++) {
     var html_cell = document.createElement('td');
-    html_cell.innerHTML = 'u';
+    html_cell.innerHTML = '~';
     html_cell.id = line_number + "_" + cell_id;
     html_line.appendChild(html_cell);
   }
@@ -32,6 +32,10 @@ var createTable = function(world) {
   const table = buildHtmlTable(world);
   const text_screen = document.getElementById('text_screen');
   text_screen.appendChild(table);
+};
+
+var afficheWorld = function(world) {
+  createTable(world);
 };
 
 /*
@@ -45,7 +49,7 @@ if (typeof window === 'undefined') {
   module.exports.buildHtmlTable = buildHtmlTable;
 } else {
   window.createWorld = createWorld;
-  window.createTable = createTable;
+  window.afficheWorld = afficheWorld;
 }
 
 /*

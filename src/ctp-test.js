@@ -18,7 +18,7 @@ describe('Control TP', () => {
   });
 
   describe('Q2', () => {
-    it('buildHtmlTable should generate a html table with u for undefined cell', () => {
+    xit('buildHtmlTable should generate a html table with u for undefined cell', () => {
       const world = [[undefined, undefined],
                      [undefined, undefined]];
       assert.equal("u", ctp.buildHtmlTable(world).rows[1].cells[1].innerHTML);
@@ -33,6 +33,13 @@ describe('Control TP', () => {
                      [undefined, undefined]];
       assert.equal("1_0", ctp.buildHtmlTable(world).rows[1].cells[0].id);
 
+    });
+  });
+  describe('Q3', () => {
+    xit('buildHtmlTable should generate a html table with ~ for undefined cell', () => {
+      const world = [[undefined, undefined],
+                     [undefined, undefined]];
+      assert.equal("~", ctp.buildHtmlTable(world).rows[1].cells[1].innerHTML);
     });
   });
 });
