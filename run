@@ -8,5 +8,5 @@ else
   BUILD_OPTS="--build-arg http_proxy=$PROXY"
 fi
 
-docker build $BUILD_OPTS -t javascript .
-docker run -it -v $(pwd):/workspace/ --user $(id --user):$(id --group) javascript bash
+docker build --pull $BUILD_OPTS -t javascript .
+docker run -it -v "$(pwd)":/workspace/ --user $(id --user):$(id --group) javascript bash
