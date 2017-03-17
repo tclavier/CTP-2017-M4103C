@@ -12,16 +12,17 @@ var buildHtmlTable = function (world) {
   var table = document.createElement('table');
   for (var line_number = 0; line_number < world.length; line_number++) {
     const line = world[line_number];
-    table.appendChild(buildHtmlLine(line));
+    table.appendChild(buildHtmlLine(line, line_number));
   }
   return table;
 };
 
-var buildHtmlLine = function(line) {
+var buildHtmlLine = function(line, line_number) {
   var html_line = document.createElement('tr');
   for (var cell_id = 0; cell_id < line.length; cell_id++) {
     var html_cell = document.createElement('td');
     html_cell.innerHTML = 'u';
+    html_cell.id = line_number + "_" + cell_id;
     html_line.appendChild(html_cell);
   }
   return html_line;

@@ -28,6 +28,11 @@ describe('Control TP', () => {
                      [undefined, undefined]];
       assert.equal(2, ctp.buildHtmlTable(world).rows.length);
     });
+    it('buildHtmlTable should generate a html table with line and column in id', () => {
+      const world = [[undefined, undefined],
+                     [undefined, undefined]];
+      assert.equal("1_0", ctp.buildHtmlTable(world).rows[1].cells[0].id);
 
+    });
   });
 });
