@@ -78,4 +78,45 @@ describe('Control TP', () => {
     });
   });
 
+  describe('Q7', () => {
+    it('moveFish should move fish to new position', () => {
+      const fish = new ctp.Fish(0,0);
+      var world = [[fish, undefined],
+                   [undefined, undefined]];
+      const old_position = fish.getPosition();
+      ctp.moveFish(world, fish);
+      const new_position = fish.getPosition();
+      assert.equal(false, JSON.stringify(old_position) == JSON.stringify(new_position));
+    });
+    it('moveFish should move fish in world', () => {
+      const fish = new ctp.Fish(0,0);
+      var world = [[fish, undefined],
+                   [undefined, undefined]];
+      const old_position = fish.getPosition();
+      ctp.moveFish(world, fish);
+      const new_position = fish.getPosition();
+      assert.equal(undefined, ctp.getElementInPosition(world, old_position));
+      assert.equal(fish, ctp.getElementInPosition(world, new_position));
+    });
+    it('addFish should register fish in world', () => {
+      var fishes = [];
+      var world = [[undefined, undefined],
+                   [undefined, undefined]];
+      const new_fish = ctp.addFish(world, fishes)[0];
+      const fish_pos = new_fish.getPosition();
+      assert.equal(new_fish, ctp.getElementInPosition(world, fish_pos));
+    });
+    it('moveAllFish should move all fish in world', () => {
+      var world = [[undefined, undefined],
+                   [undefined, undefined]];
+      var fishes = [];
+      ctp.addFish(world, fishes);
+      const fish = fishes[0];
+      const old_pos = fish.getPosition();
+      ctp.moveAllFish(world, fishes);
+      const new_pos = fish.getPosition();
+      assert.equal(false, JSON.stringify(old_pos) == JSON.stringify(new_pos));
+    });
+  });
+
 });

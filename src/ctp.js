@@ -21,7 +21,11 @@ var buildHtmlLine = function(line, line_number) {
   var html_line = document.createElement('tr');
   for (var cell_id = 0; cell_id < line.length; cell_id++) {
     var html_cell = document.createElement('td');
-    html_cell.innerHTML = '~';
+    if (line[cell_id] == undefined) {
+      html_cell.innerHTML = '~';
+    } else {
+      html_cell.innerHTML = 'P';
+    }
     html_cell.id = line_number + "_" + cell_id;
     html_line.appendChild(html_cell);
   }
@@ -37,6 +41,12 @@ var createTable = function(world) {
 var afficheWorld = function(world) {
   createTable(world);
 };
+
+var resetScreen = function () {
+  const text_screen = document.getElementById('text_screen');
+  text_screen.innerHTML = '';
+};
+
 
 var valide = function(world, line, column) {
   var in_world = true;
@@ -79,7 +89,7 @@ var freeCells = function (world, line, column) {
 
 var freeCell = function (world, line, column) {
   var cells = freeCells(world, line, column);
-  const i = Math.floor(Math.random(cells.length));
+  const i = Math.floor(Math.random() * cells.length);
   return cells[i];
 };
 
@@ -89,31 +99,63 @@ var Fish = function(line, column) {
   this.getPosition = function() {
     return [this.line, this.column];
   };
+  this.setPosition = function(position) {
+    this.line = position[0];
+    this.column = position[1];
+  };
 };
 
-var getWorldSize = function (world) {
-  const line_number = world.length;
-  const col_number = world[0].length;
-  return [line_number, col_number];
+var moveFish = function (world, fish) {
+  const old_position = fish.getPosition();
+  const new_position = freeCell(world,old_position[0], old_position[1]);
+  fish.setPosition(new_position);
+  setElementInPosition(world, old_position, undefined);
+  setElementInPosition(world, new_position, fish);
 };
 
 var addFish = function (world, fishes) {
   const new_position = freeCell(world,0,0);
   var fish = new Fish(new_position[0], new_position[1]);
-  var clone = fishes.slice(0);
-  clone.push(fish);
-  return clone;
+  setElementInPosition(world, new_position, fish);
+  fishes.push(fish);
+  return fishes;;
 };
 
+var getElementInPosition = function (world, position) {
+  return world[position[0]][position[1]]
+};
+
+var setElementInPosition = function (world, position, element) {
+  world[position[0]][position[1]] = element;
+};
+
+var moveAllFish = function (world, fishes) {
+  fishes.forEach(function(fish){
+    moveFish(world, fish);
+  });
+}
+
+var step = function (world, fishes) {
+  moveAllFish(world, fishes);
+  resetScreen();
+  afficheWorld(world);
+};
+
+
 if (typeof window === 'undefined') {
-  module.exports.createWorld = createWorld;
+  module.exports.createWorld = createWorld;;
   module.exports.buildHtmlTable = buildHtmlTable;
   module.exports.valide = valide;
   module.exports.freeCells = freeCells;
   module.exports.freeCell = freeCell;
   module.exports.addFish = addFish;
   module.exports.Fish = Fish;
+  module.exports.moveFish = moveFish;
+  module.exports.moveAllFish = moveAllFish;
+  module.exports.getElementInPosition = getElementInPosition;
 } else {
   window.createWorld = createWorld;
   window.afficheWorld = afficheWorld;
+  window.step = step;
+  window.Fish = Fish;
 }

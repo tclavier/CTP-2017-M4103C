@@ -8,9 +8,12 @@
   <body>
     <h1>Contrôle TP JavaScript</h1>
     <div id="text_screen"></div>
+    <button onclick="step(world, fishes)">Step</button>
 
     <script type="text/javascript">
-      world = createWorld(8,8);
+      world = createWorld(8,28);
+      fishes = [];
+      addFish(world, fishes);
       afficheWorld(world);
     </script>
   </body>
