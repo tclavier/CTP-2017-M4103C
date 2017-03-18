@@ -24,7 +24,7 @@ var buildHtmlLine = function(line, line_number) {
     if (line[cell_id] == undefined) {
       html_cell.innerHTML = '~';
     } else {
-      html_cell.innerHTML = 'P';
+      html_cell.innerHTML = line[cell_id].getSymbol();
     }
     html_cell.id = line_number + "_" + cell_id;
     html_line.appendChild(html_cell);
@@ -107,6 +107,24 @@ var Fish = function(line, column) {
   this.setPosition = function(position) {
     this.line = position[0];
     this.column = position[1];
+  };
+  this.getSymbol = function () {
+    return "P";
+  };
+};
+
+var Shark = function(line, column) {
+  this.line = line;
+  this.column = column;
+  this.getPosition = function() {
+    return [this.line, this.column];
+  };
+  this.setPosition = function(position) {
+    this.line = position[0];
+    this.column = position[1];
+  };
+  this.getSymbol = function () {
+    return "S";
   };
 };
 
