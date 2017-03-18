@@ -141,4 +141,27 @@ describe('Control TP', () => {
       assert.equal("S", ctp.buildHtmlTable(world).rows[0].cells[0].innerHTML);
     });
   });
+  describe('Q11', () => {
+    it('moveFish should stay fish in place when no free cell around', () => {
+      const fish00 = new ctp.Shark(0,0);
+      const fish01 = new ctp.Shark(0,1);
+      const fish10 = new ctp.Shark(1,0);
+      const fish11 = new ctp.Shark(1,1);
+      var world = [[fish00, fish01],
+                   [fish10, fish11]];
+      ctp.moveFish(world, fish00);
+      assert.equal("[0,0]", JSON.stringify(fish00.getPosition()));
+    });
+    it('addFish should not add fish when no free cell', () => {
+      const fish00 = new ctp.Shark(0,0);
+      const fish01 = new ctp.Shark(0,1);
+      const fish10 = new ctp.Shark(1,0);
+      const fish11 = new ctp.Shark(1,1);
+      var world = [[fish00, fish01],
+                   [fish10, fish11]];
+      var fishes = [fish00, fish01, fish10, fish11];
+      ctp.addFish(world, fishes)
+      assert.equal(4, fishes.length);
+    });
+  });
 });

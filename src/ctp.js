@@ -131,16 +131,20 @@ var Shark = function(line, column) {
 var moveFish = function (world, fish) {
   const old_position = fish.getPosition();
   const new_position = freeCell(world,old_position[0], old_position[1]);
-  fish.setPosition(new_position);
-  setElementInPosition(world, old_position, undefined);
-  setElementInPosition(world, new_position, fish);
+  if (new_position != undefined) {
+    fish.setPosition(new_position);
+    setElementInPosition(world, old_position, undefined);
+    setElementInPosition(world, new_position, fish);
+  }
 };
 
 var addFish = function (world, fishes) {
   const new_position = freeCell(world,0,0);
-  var fish = new Fish(new_position[0], new_position[1]);
-  setElementInPosition(world, new_position, fish);
-  fishes.push(fish);
+  if (new_position != undefined) {
+    var fish = new Fish(new_position[0], new_position[1]);
+    setElementInPosition(world, new_position, fish);
+    fishes.push(fish);
+  }
   return fishes;;
 };
 
@@ -159,6 +163,7 @@ var moveAllFish = function (world, fishes) {
 }
 
 var step = function (world, fishes) {
+  addFish(world, fishes);
   moveAllFish(world, fishes);
   resetScreen();
   afficheWorld(world);
