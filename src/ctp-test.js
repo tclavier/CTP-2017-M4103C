@@ -32,11 +32,13 @@ describe('Control TP', () => {
 
     });
   });
+
   describe('Q3', () => {
     it('buildHtmlTable should generate a html table with ~ for undefined cell', () => {
       assert.equal("~", ctp.buildHtmlTable(default_world).rows[1].cells[1].innerHTML);
     });
   });
+
   describe('Q4', () => {
     it('valide should return true if point is in world', () => {
       assert.equal(true, ctp.valide(default_world, 1, 1));
@@ -49,9 +51,31 @@ describe('Control TP', () => {
       assert.equal(false, ctp.valide(default_world, 0, 2));
     });
   });
+
   describe('Q5', () => {
     it('freeCells should return all free cell around (line, column)', () => {
       assert.equal(3, ctp.freeCells(default_world, 1, 1).length);
     });
+    it('freeCell should return one random free cell around (line, column)', () => {
+      assert.equal(2, ctp.freeCell(default_world, 1, 1).length);
+    });
   });
+
+  describe('Q6', () => {
+    it('addFish must add element in fich list', () => {
+      var fishes = [];
+      assert.equal(1, ctp.addFish(default_world, fishes).length);
+    });
+    it('addFish must create fish', () => {
+      var fishes = [];
+      assert.equal(true, ctp.addFish(default_world, fishes)[0] instanceof ctp.Fish);
+    });
+    it('addFish must create entity in random position', () => {
+      var fishes = [];
+      const new_fish = ctp.addFish(default_world, fishes)[0];
+      const fish_pos = new_fish.getPosition();
+      assert.equal(true, ctp.valide(default_world, fish_pos[0], fish_pos[1]));
+    });
+  });
+
 });
