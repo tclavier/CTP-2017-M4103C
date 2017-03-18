@@ -41,5 +41,11 @@ describe('Control TP', () => {
     it('valide should return true if point is in world', () => {
       assert.equal(true, ctp.valide(default_world, 1, 1));
     });
+    it('valide should return false if point is out of world', () => {
+      assert.equal(false, ctp.valide(default_world, -1, 1));
+      assert.equal(false, ctp.valide(default_world, 2, 1));
+      assert.equal(false, ctp.valide(default_world, 1, 4));
+      assert.equal(false, ctp.valide(default_world, 0, -1));
+    });
   });
 });

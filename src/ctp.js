@@ -39,7 +39,16 @@ var afficheWorld = function(world) {
 };
 
 var valide = function(world, line, column) {
-  return true;
+  var in_world = true;
+  if (world[line] === undefined) {
+    in_world = false;
+  } else {
+    var max_column  = world[line].length;
+    if (column < 0 || column > max_column ) {
+      in_world = false;
+    }
+  }
+  return in_world;
 };
 
 /*
