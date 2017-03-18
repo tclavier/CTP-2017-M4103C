@@ -117,6 +117,16 @@ describe('Control TP', () => {
       assert.equal(false, JSON.stringify(old_pos) == JSON.stringify(new_pos));
     });
   });
+  describe('Q9', () => {
+    it('Fish should have a getSymbol function', () => {
+      const fish = new ctp.Fish(0,0);
+      assert.equal("P", fish.getSymbol());
+    });
+    it('Shark should have a getSymbol function', () => {
+      const fish = new ctp.Shark(0,0);
+      assert.equal("S", fish.getSymbol());
+    });
+  });
   describe('Q10', () => {
     it('buildHtmlTable should generate a html table with P for fish cell', () => {
       const fish = new ctp.Fish(0,0);
