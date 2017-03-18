@@ -4,6 +4,9 @@ var document = jsdom.jsdom(undefined);
 global.document = document;
 const assert = require('assert');
 
+const default_world = [[undefined, undefined],
+                       [undefined, undefined]];
+
 describe('Control TP', () => {
   describe('Q1', () => {
     it('createWorld should create world map initialised by Undefined', () => {
@@ -19,27 +22,24 @@ describe('Control TP', () => {
 
   describe('Q2', () => {
     xit('buildHtmlTable should generate a html table with u for undefined cell', () => {
-      const world = [[undefined, undefined],
-                     [undefined, undefined]];
-      assert.equal("u", ctp.buildHtmlTable(world).rows[1].cells[1].innerHTML);
+      assert.equal("u", ctp.buildHtmlTable(default_world).rows[1].cells[1].innerHTML);
     });
     it('buildHtmlTable should generate a html table with good line number', () => {
-      const world = [[undefined, undefined],
-                     [undefined, undefined]];
-      assert.equal(2, ctp.buildHtmlTable(world).rows.length);
+      assert.equal(2, ctp.buildHtmlTable(default_world).rows.length);
     });
     it('buildHtmlTable should generate a html table with line and column in id', () => {
-      const world = [[undefined, undefined],
-                     [undefined, undefined]];
-      assert.equal("1_0", ctp.buildHtmlTable(world).rows[1].cells[0].id);
+      assert.equal("1_0", ctp.buildHtmlTable(default_world).rows[1].cells[0].id);
 
     });
   });
   describe('Q3', () => {
-    xit('buildHtmlTable should generate a html table with ~ for undefined cell', () => {
-      const world = [[undefined, undefined],
-                     [undefined, undefined]];
-      assert.equal("~", ctp.buildHtmlTable(world).rows[1].cells[1].innerHTML);
+    it('buildHtmlTable should generate a html table with ~ for undefined cell', () => {
+      assert.equal("~", ctp.buildHtmlTable(default_world).rows[1].cells[1].innerHTML);
+    });
+  });
+  describe('Q4', () => {
+    it('valide should return true if point is in world', () => {
+      assert.equal(true, ctp.valide(default_world, 1, 1));
     });
   });
 });

@@ -38,6 +38,10 @@ var afficheWorld = function(world) {
   createTable(world);
 };
 
+var valide = function(world, line, column) {
+  return true;
+};
+
 /*
 (function(exports){
   exports.createWorld = createWorld;
@@ -47,6 +51,7 @@ var afficheWorld = function(world) {
 if (typeof window === 'undefined') {
   module.exports.createWorld = createWorld;
   module.exports.buildHtmlTable = buildHtmlTable;
+  module.exports.valide = valide;
 } else {
   window.createWorld = createWorld;
   window.afficheWorld = afficheWorld;
