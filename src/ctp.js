@@ -174,6 +174,7 @@ if (typeof window === 'undefined') {
   module.exports.freeCell = freeCell;
   module.exports.addFish = addFish;
   module.exports.Fish = Fish;
+  module.exports.Shark = Shark;
   module.exports.moveFish = moveFish;
   module.exports.moveAllFish = moveAllFish;
   module.exports.getElementInPosition = getElementInPosition;

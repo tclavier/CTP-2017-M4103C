@@ -29,7 +29,6 @@ describe('Control TP', () => {
     });
     it('buildHtmlTable should generate a html table with line and column in id', () => {
       assert.equal("1_0", ctp.buildHtmlTable(default_world).rows[1].cells[0].id);
-
     });
   });
 
@@ -118,5 +117,18 @@ describe('Control TP', () => {
       assert.equal(false, JSON.stringify(old_pos) == JSON.stringify(new_pos));
     });
   });
-
+  describe('Q10', () => {
+    it('buildHtmlTable should generate a html table with P for fish cell', () => {
+      const fish = new ctp.Fish(0,0);
+      var world = [[fish, undefined],
+                   [undefined, undefined]];
+      assert.equal("P", ctp.buildHtmlTable(world).rows[0].cells[0].innerHTML);
+    });
+    it('buildHtmlTable should generate a html table with S for shark cell', () => {
+      const fish = new ctp.Shark(0,0);
+      var world = [[fish, undefined],
+                   [undefined, undefined]];
+      assert.equal("S", ctp.buildHtmlTable(world).rows[0].cells[0].innerHTML);
+    });
+  });
 });
