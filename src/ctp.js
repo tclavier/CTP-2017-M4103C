@@ -42,7 +42,7 @@ var valide = function(world, line, column) {
   var in_world = true;
   if (world[line]) {
     var max_column  = world[line].length;
-    if (column < 0 || column > max_column ) {
+    if (column < 0 || column >= max_column ) {
       in_world = false;
     }
   } else {
@@ -51,10 +51,37 @@ var valide = function(world, line, column) {
   return in_world;
 };
 
+var isPositionValide = function(world, line, column) {
+  return valide(world, line, column);
+};
+
+var isFreeCell = function (world, line, column){
+  if (isPositionValide(world, line, column)) {
+    if (world[line][column] === undefined) {
+      return true;
+    }
+  }
+  return false;
+};
+
+var freeCells = function (world, line, column) {
+  var free_cells = [];
+  if (isFreeCell(world, line -1, column + 1)) free_cells.push([line - 1, column + 1]);
+  if (isFreeCell(world, line -1, column    )) free_cells.push([line - 1, column]);
+  if (isFreeCell(world, line -1, column - 1)) free_cells.push([line - 1, column - 1]);
+  if (isFreeCell(world, line   , column + 1)) free_cells.push([line    , column + 1]);
+  if (isFreeCell(world, line   , column - 1)) free_cells.push([line    , column - 1]);
+  if (isFreeCell(world, line +1, column + 1)) free_cells.push([line + 1, column + 1]);
+  if (isFreeCell(world, line +1, column    )) free_cells.push([line + 1, column]);
+  if (isFreeCell(world, line +1, column - 1)) free_cells.push([line + 1, column - 1]);
+  return free_cells;
+};
+
 if (typeof window === 'undefined') {
   module.exports.createWorld = createWorld;
   module.exports.buildHtmlTable = buildHtmlTable;
   module.exports.valide = valide;
+  module.exports.freeCells = freeCells;
 } else {
   window.createWorld = createWorld;
   window.afficheWorld = afficheWorld;

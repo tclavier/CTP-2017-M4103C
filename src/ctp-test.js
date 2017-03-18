@@ -46,6 +46,12 @@ describe('Control TP', () => {
       assert.equal(false, ctp.valide(default_world, 2, 1));
       assert.equal(false, ctp.valide(default_world, 1, 4));
       assert.equal(false, ctp.valide(default_world, 0, -1));
+      assert.equal(false, ctp.valide(default_world, 0, 2));
+    });
+  });
+  describe('Q5', () => {
+    it('freeCells should return all free cell around (line, column)', () => {
+      assert.equal(3, ctp.freeCells(default_world, 1, 1).length);
     });
   });
 });
