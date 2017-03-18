@@ -42,6 +42,11 @@ var afficheWorld = function(world) {
   createTable(world);
 };
 
+var showFichNumber = function(fishes) {
+  const fish_number = document.getElementById('fish_number');
+  fish_number.innerHTML = fishes.length;
+};
+
 var resetScreen = function () {
   const text_screen = document.getElementById('text_screen');
   text_screen.innerHTML = '';
@@ -139,6 +144,7 @@ var step = function (world, fishes) {
   moveAllFish(world, fishes);
   resetScreen();
   afficheWorld(world);
+  showFichNumber(fishes)
 };
 
 

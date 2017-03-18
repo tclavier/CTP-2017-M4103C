@@ -7,6 +7,9 @@
   </head>
   <body>
     <h1>Contrôle TP JavaScript</h1>
+    <div>
+      Nombre de poissons : <span id="fish_number"></span>
+    </div>
     <div id="text_screen"></div>
     <button onclick="step(world, fishes)">Step</button>
 
@@ -15,6 +18,9 @@
       fishes = [];
       addFish(world, fishes);
       afficheWorld(world);
+
+      setInterval(function () {step(world, fishes)}, 1000);
+
     </script>
   </body>
 </html>
