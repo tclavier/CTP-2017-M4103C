@@ -51,12 +51,6 @@ var valide = function(world, line, column) {
   return in_world;
 };
 
-/*
-(function(exports){
-  exports.createWorld = createWorld;
-}(typeof exports === 'undefined' ? this.ctp = {} : exports));
-*/
-
 if (typeof window === 'undefined') {
   module.exports.createWorld = createWorld;
   module.exports.buildHtmlTable = buildHtmlTable;
@@ -65,14 +59,3 @@ if (typeof window === 'undefined') {
   window.createWorld = createWorld;
   window.afficheWorld = afficheWorld;
 }
-
-/*
-(function(window){
-    if (typeof module === "object" && module && typeof module.exports === "object") {
-      module.exports.createWorld = createWorld;
-    } else {
-      window.createWorld = createWorld;
-      window.createTable = createTable;
-    }
-})(this)
-*/
