@@ -84,6 +84,15 @@ var isFreeCell = function (world, line, column){
   return false;
 };
 
+var isFishCell = function (world, line, column){
+  if (isPositionValide(world, [line, column])) {
+    if (world[line][column] instanceof Fish ) {
+      return true;
+    }
+  }
+  return false;
+};
+
 var freeCells = function (world, line, column) {
   var free_cells = [];
   if (isFreeCell(world, line -1, column + 1)) free_cells.push([line - 1, column + 1]);
@@ -95,6 +104,21 @@ var freeCells = function (world, line, column) {
   if (isFreeCell(world, line +1, column    )) free_cells.push([line + 1, column    ]);
   if (isFreeCell(world, line +1, column - 1)) free_cells.push([line + 1, column - 1]);
   return free_cells;
+};
+
+var findFishes = function (world, position) {
+  const line = position[0];
+  const column = position[1];
+  var fishes = [];
+  if (isFishCell(world, line -1, column + 1)) fishes.push([line - 1, column + 1]);
+  if (isFishCell(world, line -1, column    )) fishes.push([line - 1, column    ]);
+  if (isFishCell(world, line -1, column - 1)) fishes.push([line - 1, column - 1]);
+  if (isFishCell(world, line   , column + 1)) fishes.push([line    , column + 1]);
+  if (isFishCell(world, line   , column - 1)) fishes.push([line    , column - 1]);
+  if (isFishCell(world, line +1, column + 1)) fishes.push([line + 1, column + 1]);
+  if (isFishCell(world, line +1, column    )) fishes.push([line + 1, column    ]);
+  if (isFishCell(world, line +1, column - 1)) fishes.push([line + 1, column - 1]);
+  return fishes;
 };
 
 var freeCell = function (world, line, column) {
@@ -171,10 +195,30 @@ var getSharkList = function (world) {
   return [].concat.apply([], world).filter(function(item){return item instanceof Shark})
 }
 
+var getFishList = function (world) {
+  return [].concat.apply([], world).filter(function(item){return item instanceof Fish})
+}
+
+var eatFish = function (world, shark) {
+  const old_position = shark.getPosition();
+  const fishes = findFishes(world,old_position);
+  var new_position = undefined;
+  if (fishes && fishes.length >= 1) {
+    new_position = fishes[0];
+    shark.setPosition(new_position);
+    setElementInPosition(world, old_position, undefined);
+    setElementInPosition(world, new_position, shark);
+    return true;
+  }
+  return false;
+}
+
 var moveAllShark = function (world) {
   const sharks = getSharkList(world);
-  sharks.forEach(function(fish){
-    moveAnimal(world, fish);
+  sharks.forEach(function(shark){
+    if (! eatFish(world, shark)) {
+      moveAnimal(world, shark);
+    }
   });
 }
 
@@ -182,6 +226,7 @@ var step = function (world, fishes) {
   addFish(world, fishes);
   moveAllFish(world, fishes);
   moveAllShark(world);
+  fishes = getFishList(world);
   resetScreen();
   afficheWorld(world);
   showFichNumber(fishes)
@@ -194,6 +239,7 @@ if (typeof window === 'undefined') {
   module.exports.buildHtmlTable = buildHtmlTable;
   module.exports.valide = valide;
   module.exports.freeCells = freeCells;
+  module.exports.findFishes = findFishes;
   module.exports.freeCell = freeCell;
   module.exports.addFish = addFish;
   module.exports.Fish = Fish;

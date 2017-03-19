@@ -173,4 +173,24 @@ describe('Control TP', () => {
       assert.equal(false, JSON.stringify(old_pos) == JSON.stringify(new_pos));
     });
   });
+  describe('Q12', () => {
+    it('moveAllShark should eat fish if possible', () => {
+      const shark = new ctp.Shark(0,0);
+      const fish = new ctp.Fish(1,1);
+      var world = [[shark, undefined],
+                   [undefined, fish]];
+      const old_pos = shark.getPosition();
+      ctp.moveAllShark(world);
+      const new_pos = shark.getPosition();
+      assert.equal("[1,1]", JSON.stringify(new_pos));
+    });
+    it('findFishes should find all fish around position', () => {
+      const fish = new ctp.Fish(1,1);
+      var world = [[undefined, undefined],
+                   [undefined, fish]];
+      const fishes = ctp.findFishes(world, [0,0]);
+      assert.equal("[1,1]", JSON.stringify(fishes[0]));
+    });
+
+  });
 });
