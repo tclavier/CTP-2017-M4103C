@@ -47,6 +47,11 @@ var showFichNumber = function(fishes) {
   fish_number.innerHTML = fishes.length;
 };
 
+var showSharkNumber = function(world) {
+  const shark_number = document.getElementById('shark_number');
+  shark_number.innerHTML = getSharkList(world).length;
+};
+
 var resetScreen = function () {
   const text_screen = document.getElementById('text_screen');
   text_screen.innerHTML = '';
@@ -128,7 +133,7 @@ var Shark = function(line, column) {
   };
 };
 
-var moveFish = function (world, fish) {
+var moveAnimal = function (world, fish) {
   const old_position = fish.getPosition();
   const new_position = freeCell(world,old_position[0], old_position[1]);
   if (new_position != undefined) {
@@ -158,16 +163,29 @@ var setElementInPosition = function (world, position, element) {
 
 var moveAllFish = function (world, fishes) {
   fishes.forEach(function(fish){
-    moveFish(world, fish);
+    moveAnimal(world, fish);
+  });
+}
+
+var getSharkList = function (world) {
+  return [].concat.apply([], world).filter(function(item){return item instanceof Shark})
+}
+
+var moveAllShark = function (world) {
+  const sharks = getSharkList(world);
+  sharks.forEach(function(fish){
+    moveAnimal(world, fish);
   });
 }
 
 var step = function (world, fishes) {
   addFish(world, fishes);
   moveAllFish(world, fishes);
+  moveAllShark(world);
   resetScreen();
   afficheWorld(world);
   showFichNumber(fishes)
+  showSharkNumber(world)
 };
 
 
@@ -180,8 +198,9 @@ if (typeof window === 'undefined') {
   module.exports.addFish = addFish;
   module.exports.Fish = Fish;
   module.exports.Shark = Shark;
-  module.exports.moveFish = moveFish;
+  module.exports.moveAnimal = moveAnimal;
   module.exports.moveAllFish = moveAllFish;
+  module.exports.moveAllShark = moveAllShark;
   module.exports.getElementInPosition = getElementInPosition;
 } else {
   window.createWorld = createWorld;

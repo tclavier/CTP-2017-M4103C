@@ -78,21 +78,21 @@ describe('Control TP', () => {
   });
 
   describe('Q7', () => {
-    it('moveFish should move fish to new position', () => {
+    it('moveAnimal should move fish to new position', () => {
       const fish = new ctp.Fish(0,0);
       var world = [[fish, undefined],
                    [undefined, undefined]];
       const old_position = fish.getPosition();
-      ctp.moveFish(world, fish);
+      ctp.moveAnimal(world, fish);
       const new_position = fish.getPosition();
       assert.equal(false, JSON.stringify(old_position) == JSON.stringify(new_position));
     });
-    it('moveFish should move fish in world', () => {
+    it('moveAnimal should move fish in world', () => {
       const fish = new ctp.Fish(0,0);
       var world = [[fish, undefined],
                    [undefined, undefined]];
       const old_position = fish.getPosition();
-      ctp.moveFish(world, fish);
+      ctp.moveAnimal(world, fish);
       const new_position = fish.getPosition();
       assert.equal(undefined, ctp.getElementInPosition(world, old_position));
       assert.equal(fish, ctp.getElementInPosition(world, new_position));
@@ -142,14 +142,14 @@ describe('Control TP', () => {
     });
   });
   describe('Q11', () => {
-    it('moveFish should stay fish in place when no free cell around', () => {
+    it('moveAnimal should stay fish in place when no free cell around', () => {
       const fish00 = new ctp.Shark(0,0);
       const fish01 = new ctp.Shark(0,1);
       const fish10 = new ctp.Shark(1,0);
       const fish11 = new ctp.Shark(1,1);
       var world = [[fish00, fish01],
                    [fish10, fish11]];
-      ctp.moveFish(world, fish00);
+      ctp.moveAnimal(world, fish00);
       assert.equal("[0,0]", JSON.stringify(fish00.getPosition()));
     });
     it('addFish should not add fish when no free cell', () => {
@@ -162,6 +162,15 @@ describe('Control TP', () => {
       var fishes = [fish00, fish01, fish10, fish11];
       ctp.addFish(world, fishes)
       assert.equal(4, fishes.length);
+    });
+    it('moveAllShark should move all shark in world', () => {
+      const shark = new ctp.Shark(0,0);
+      var world = [[shark, undefined],
+                   [undefined, undefined]];
+      const old_pos = shark.getPosition();
+      ctp.moveAllShark(world);
+      const new_pos = shark.getPosition();
+      assert.equal(false, JSON.stringify(old_pos) == JSON.stringify(new_pos));
     });
   });
 });

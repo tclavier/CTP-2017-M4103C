@@ -10,11 +10,16 @@
     <div>
       Nombre de poissons : <span id="fish_number"></span>
     </div>
+    <div>
+      Nombre de requins : <span id="shark_number"></span>
+    </div>
     <div id="text_screen"></div>
     <button onclick="step(world, fishes)">Step</button>
 
     <script type="text/javascript">
-      world = createWorld(8,28);
+      const world = createWorld(12,50);
+      const shark = new Shark(11,49);
+      world[11][49] = shark;
       fishes = [];
       addFish(world, fishes);
       afficheWorld(world);
