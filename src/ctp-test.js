@@ -227,4 +227,34 @@ describe('Control TP', () => {
       assert.equal(2, ctp.getSharkList(world).length);
     });
   });
+  describe('Q15', () => {
+    it('shark will die if not eat', () => {
+      var shark = new ctp.Shark(1,1);
+      shark.starvation = 1;
+      shark.hunger = 1;
+      var world = [[undefined, undefined],
+                   [undefined, shark]];
+      ctp.starvation(world);
+      assert.equal(0, ctp.getSharkList(world).length);
+    });
+    it('shark will not die if starvation is not reached', () => {
+      var shark = new ctp.Shark(1,1);
+      shark.starvation = 3;
+      shark.hunger = 1;
+      var world = [[undefined, undefined],
+                   [undefined, shark]];
+      ctp.starvation(world);
+      assert.equal(1, ctp.getSharkList(world).length);
+    });
+    it('shark will not die if eat before starvation', () => {
+      var shark = new ctp.Shark(1,1);
+      var fish = new ctp.Fish(1,1);
+      shark.starvation = 1;
+      var world = [[fish,      undefined],
+                   [undefined, shark]];
+      ctp.moveAllShark(world);
+      ctp.starvation(world);
+      assert.equal(1, ctp.getSharkList(world).length);
+    });
+  });
 });

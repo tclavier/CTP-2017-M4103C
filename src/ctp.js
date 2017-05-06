@@ -2,6 +2,7 @@
 
 const FISH_REPRODUCE=2;
 const SHARK_REPRODUCE=3;
+const SHARK_STARVATION=3;
 
 const createWorld = function (line, column) {
   var map = new Array(line);
@@ -168,6 +169,8 @@ var Shark = function(line, column) {
   this.column = column;
   this.reproduce = SHARK_REPRODUCE;
   this.gestation = 0;
+  this.starvation = SHARK_STARVATION;
+  this.hunger = 0;
   this.getPosition = function() {
     return [this.line, this.column];
   };
@@ -243,6 +246,7 @@ const eatFish = function (world, shark) {
   if (fishes && fishes.length >= 1) {
     new_position = fishes[0];
     shark.setPosition(new_position);
+    shark.hunger = 0;
     setElementInPosition(world, old_position, undefined);
     setElementInPosition(world, new_position, shark);
     return true;
@@ -262,6 +266,7 @@ const moveAllShark = function (world) {
 const step = function (world, fishes) {
   moveAllFish(world, fishes);
   moveAllShark(world);
+  starvation(world);
   reproduce(world);
   fishes = getFishList(world);
   resetScreen();
@@ -289,6 +294,17 @@ const reproduce = function(world) {
   });
 }
 
+const starvation = function(world) {
+  const sharks = getSharkList(world);
+  sharks.forEach(function(shark){
+    shark.hunger += 1;
+    if(shark.hunger > shark.starvation) {
+      const position = shark.getPosition();
+      setElementInPosition(world, position, undefined);
+    }
+  });
+}
+
 if (typeof window === 'undefined') {
   module.exports.createWorld = createWorld;;
   module.exports.buildHtmlTable = buildHtmlTable;
@@ -306,6 +322,7 @@ if (typeof window === 'undefined') {
   module.exports.getFishList = getFishList;
   module.exports.getSharkList = getSharkList;
   module.exports.reproduce = reproduce;
+  module.exports.starvation = starvation;
 } else {
   window.createWorld = createWorld;
   window.afficheWorld = afficheWorld;
