@@ -1,6 +1,6 @@
 'use strict';
 
-var createWorld = function (line, column) {
+const createWorld = function (line, column) {
   var map = new Array(line);
   for (var i = 0; i < line; i++) {
    map[i]=new Array(column);
@@ -8,7 +8,19 @@ var createWorld = function (line, column) {
   return map;
 };
 
-var buildHtmlTable = function (world) {
+const countLinesOfWorld = function(world) {
+  return world.length;
+}
+
+const countRowsOfWorld = function(world) {
+  if (countLinesOfWorld(world) > 0) {
+    return world[0].length;
+  } else {
+    return 0;
+  }
+}
+
+const buildHtmlTable = function (world) {
   var table = document.createElement('table');
   for (var line_number = 0; line_number < world.length; line_number++) {
     const line = world[line_number];
@@ -17,7 +29,7 @@ var buildHtmlTable = function (world) {
   return table;
 };
 
-var buildHtmlLine = function(line, line_number) {
+const buildHtmlLine = function(line, line_number) {
   var html_line = document.createElement('tr');
   for (var cell_id = 0; cell_id < line.length; cell_id++) {
     var html_cell = document.createElement('td');
@@ -32,33 +44,33 @@ var buildHtmlLine = function(line, line_number) {
   return html_line;
 }
 
-var createTable = function(world) {
+const createTable = function(world) {
   const table = buildHtmlTable(world);
   const text_screen = document.getElementById('text_screen');
   text_screen.appendChild(table);
 };
 
-var afficheWorld = function(world) {
+const afficheWorld = function(world) {
   createTable(world);
 };
 
-var showFichNumber = function(fishes) {
+const showFichNumber = function(fishes) {
   const fish_number = document.getElementById('fish_number');
   fish_number.innerHTML = fishes.length;
 };
 
-var showSharkNumber = function(world) {
+const showSharkNumber = function(world) {
   const shark_number = document.getElementById('shark_number');
   shark_number.innerHTML = getSharkList(world).length;
 };
 
-var resetScreen = function () {
+const resetScreen = function () {
   const text_screen = document.getElementById('text_screen');
   text_screen.innerHTML = '';
 };
 
 
-var valide = function(world, line, column) {
+const valide = function(world, line, column) {
   var in_world = true;
   if (world[line]) {
     var max_column  = world[line].length;
@@ -71,11 +83,11 @@ var valide = function(world, line, column) {
   return in_world;
 };
 
-var isPositionValide = function(world, position) {
+const isPositionValide = function(world, position) {
   return valide(world, position[0], position[1]);
 };
 
-var isFreeCell = function (world, line, column){
+const isFreeCell = function (world, line, column){
   if (isPositionValide(world, [line, column])) {
     if (world[line][column] === undefined) {
       return true;
@@ -84,7 +96,7 @@ var isFreeCell = function (world, line, column){
   return false;
 };
 
-var isFishCell = function (world, line, column){
+const isFishCell = function (world, line, column){
   if (isPositionValide(world, [line, column])) {
     if (world[line][column] instanceof Fish ) {
       return true;
@@ -93,7 +105,7 @@ var isFishCell = function (world, line, column){
   return false;
 };
 
-var freeCells = function (world, line, column) {
+const freeCells = function (world, line, column) {
   var free_cells = [];
   if (isFreeCell(world, line -1, column + 1)) free_cells.push([line - 1, column + 1]);
   if (isFreeCell(world, line -1, column    )) free_cells.push([line - 1, column    ]);
@@ -106,7 +118,7 @@ var freeCells = function (world, line, column) {
   return free_cells;
 };
 
-var findFishes = function (world, position) {
+const findFishes = function (world, position) {
   const line = position[0];
   const column = position[1];
   var fishes = [];
@@ -121,7 +133,7 @@ var findFishes = function (world, position) {
   return fishes;
 };
 
-var freeCell = function (world, line, column) {
+const freeCell = function (world, line, column) {
   var cells = freeCells(world, line, column);
   const i = Math.floor(Math.random() * cells.length);
   return cells[i];
@@ -138,7 +150,7 @@ var Fish = function(line, column) {
     this.column = position[1];
   };
   this.getSymbol = function () {
-    return "P";
+    return "F";
   };
 };
 
@@ -157,7 +169,7 @@ var Shark = function(line, column) {
   };
 };
 
-var moveAnimal = function (world, fish) {
+const moveAnimal = function (world, fish) {
   const old_position = fish.getPosition();
   const new_position = freeCell(world,old_position[0], old_position[1]);
   if (new_position != undefined) {
@@ -166,9 +178,20 @@ var moveAnimal = function (world, fish) {
     setElementInPosition(world, new_position, fish);
   }
 };
+const getRandomPosition = function(world) {
+    const line = Math.floor(Math.random() * countLinesOfWorld(world))
+    const row = Math.floor(Math.random() * countRowsOfWorld(world))
+    return freeCell(world,line, row);
+}
 
-var addFish = function (world, fishes) {
-  const new_position = freeCell(world,0,0);
+const addFish = function (world, fishes, random=false) {
+  var new_position;
+  if (random) {
+    new_position = getRandomPosition(world)
+  } else {
+    new_position = freeCell(world,0,0);
+  }
+
   if (new_position != undefined) {
     var fish = new Fish(new_position[0], new_position[1]);
     setElementInPosition(world, new_position, fish);
@@ -177,29 +200,29 @@ var addFish = function (world, fishes) {
   return fishes;;
 };
 
-var getElementInPosition = function (world, position) {
+const getElementInPosition = function (world, position) {
   return world[position[0]][position[1]]
 };
 
-var setElementInPosition = function (world, position, element) {
+const setElementInPosition = function (world, position, element) {
   world[position[0]][position[1]] = element;
 };
 
-var moveAllFish = function (world, fishes) {
+const moveAllFish = function (world, fishes) {
   fishes.forEach(function(fish){
     moveAnimal(world, fish);
   });
 }
 
-var getSharkList = function (world) {
+const getSharkList = function (world) {
   return [].concat.apply([], world).filter(function(item){return item instanceof Shark})
 }
 
-var getFishList = function (world) {
+const getFishList = function (world) {
   return [].concat.apply([], world).filter(function(item){return item instanceof Fish})
 }
 
-var eatFish = function (world, shark) {
+const eatFish = function (world, shark) {
   const old_position = shark.getPosition();
   const fishes = findFishes(world,old_position);
   var new_position = undefined;
@@ -213,7 +236,7 @@ var eatFish = function (world, shark) {
   return false;
 }
 
-var moveAllShark = function (world) {
+const moveAllShark = function (world) {
   const sharks = getSharkList(world);
   sharks.forEach(function(shark){
     if (! eatFish(world, shark)) {
@@ -222,8 +245,7 @@ var moveAllShark = function (world) {
   });
 }
 
-var step = function (world, fishes) {
-  addFish(world, fishes);
+const step = function (world, fishes) {
   moveAllFish(world, fishes);
   moveAllShark(world);
   fishes = getFishList(world);
@@ -232,7 +254,6 @@ var step = function (world, fishes) {
   showFichNumber(fishes)
   showSharkNumber(world)
 };
-
 
 if (typeof window === 'undefined') {
   module.exports.createWorld = createWorld;;
@@ -253,4 +274,6 @@ if (typeof window === 'undefined') {
   window.afficheWorld = afficheWorld;
   window.step = step;
   window.Fish = Fish;
+  window.getRandomPosition = getRandomPosition;
+  window.setElementInPosition = setElementInPosition;
 }

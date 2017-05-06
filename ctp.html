@@ -19,9 +19,11 @@
     <script type="text/javascript">
       const world = createWorld(12,50);
       const shark = new Shark(0,0);
-      world[11][49] = shark;
+      const shark_position = getRandomPosition(world);
+      shark.setPosition(shark_position);
+      setElementInPosition(world, shark_position, shark);
       fishes = [];
-      addFish(world, fishes);
+      addFish(world, fishes, true);
       afficheWorld(world);
 
       setInterval(function () {step(world, fishes)}, 1000);

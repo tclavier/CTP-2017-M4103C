@@ -120,7 +120,7 @@ describe('Control TP', () => {
   describe('Q9', () => {
     it('Fish should have a getSymbol function', () => {
       const fish = new ctp.Fish(0,0);
-      assert.equal("P", fish.getSymbol());
+      assert.equal("F", fish.getSymbol());
     });
     it('Shark should have a getSymbol function', () => {
       const fish = new ctp.Shark(0,0);
@@ -132,7 +132,7 @@ describe('Control TP', () => {
       const fish = new ctp.Fish(0,0);
       var world = [[fish, undefined],
                    [undefined, undefined]];
-      assert.equal("P", ctp.buildHtmlTable(world).rows[0].cells[0].innerHTML);
+      assert.equal("F", ctp.buildHtmlTable(world).rows[0].cells[0].innerHTML);
     });
     it('buildHtmlTable should generate a html table with S for shark cell', () => {
       const fish = new ctp.Shark(0,0);
@@ -191,6 +191,14 @@ describe('Control TP', () => {
       const fishes = ctp.findFishes(world, [0,0]);
       assert.equal("[1,1]", JSON.stringify(fishes[0]));
     });
-
+  });
+  describe('Q13', () => {
+    it('fish will reproduce each turn', () => {
+      const fish = new ctp.Fish(1,1);
+      var world = [[undefined, undefined],
+                   [undefined, fish]];
+      const new_pos = shark.getPosition();
+      assert.equal("[1,1]", JSON.stringify(new_pos));
+    });
   });
 });
