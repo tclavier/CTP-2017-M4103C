@@ -22,8 +22,7 @@
       const shark_position = getRandomPosition(world);
       shark.setPosition(shark_position);
       setElementInPosition(world, shark_position, shark);
-      fishes = [];
-      addFish(world, fishes, true);
+      fishes = addFish(world, [], true);
       afficheWorld(world);
 
       setInterval(function () {step(world, fishes)}, 1000);

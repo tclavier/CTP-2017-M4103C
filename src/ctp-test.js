@@ -7,6 +7,16 @@ const assert = require('assert');
 const default_world = [[undefined, undefined],
                        [undefined, undefined]];
 
+function createFullSharkWorld() {
+  const fish00 = new ctp.Shark(0,0);
+  const fish01 = new ctp.Shark(0,1);
+  const fish10 = new ctp.Shark(1,0);
+  const fish11 = new ctp.Shark(1,1);
+  var world = [[fish00, fish01],
+               [fish10, fish11]];
+  return world;
+}
+
 describe('Control TP', () => {
   describe('Q1', () => {
     it('createWorld should create world map initialised by Undefined', () => {
@@ -108,8 +118,8 @@ describe('Control TP', () => {
     it('moveAllFish should move all fish in world', () => {
       var world = [[undefined, undefined],
                    [undefined, undefined]];
-      var fishes = [];
-      ctp.addFish(world, fishes);
+      var fishes = ctp.addFish(world, []);
+      assert.equal(1, fishes.length)
       const fish = fishes[0];
       const old_pos = fish.getPosition();
       ctp.moveAllFish(world, fishes);
@@ -143,25 +153,19 @@ describe('Control TP', () => {
   });
   describe('Q11', () => {
     it('moveAnimal should stay fish in place when no free cell around', () => {
-      const fish00 = new ctp.Shark(0,0);
-      const fish01 = new ctp.Shark(0,1);
-      const fish10 = new ctp.Shark(1,0);
-      const fish11 = new ctp.Shark(1,1);
+      const fish00 = new ctp.Fish(0,0);
+      const fish01 = new ctp.Fish(0,1);
+      const fish10 = new ctp.Fish(1,0);
+      const fish11 = new ctp.Fish(1,1);
       var world = [[fish00, fish01],
                    [fish10, fish11]];
       ctp.moveAnimal(world, fish00);
       assert.equal("[0,0]", JSON.stringify(fish00.getPosition()));
     });
     it('addFish should not add fish when no free cell', () => {
-      const fish00 = new ctp.Shark(0,0);
-      const fish01 = new ctp.Shark(0,1);
-      const fish10 = new ctp.Shark(1,0);
-      const fish11 = new ctp.Shark(1,1);
-      var world = [[fish00, fish01],
-                   [fish10, fish11]];
-      var fishes = [fish00, fish01, fish10, fish11];
-      ctp.addFish(world, fishes)
-      assert.equal(4, fishes.length);
+      var world = createFullSharkWorld();
+      const fishes = ctp.addFish(world, [])
+      assert.equal(0, fishes.length);
     });
     it('moveAllShark should move all shark in world', () => {
       const shark = new ctp.Shark(0,0);
@@ -194,11 +198,33 @@ describe('Control TP', () => {
   });
   describe('Q13', () => {
     it('fish will reproduce each turn', () => {
-      const fish = new ctp.Fish(1,1);
+      var fish = new ctp.Fish(1,1);
+      fish.reproduce = 1;
       var world = [[undefined, undefined],
                    [undefined, fish]];
-      const new_pos = shark.getPosition();
-      assert.equal("[1,1]", JSON.stringify(new_pos));
+      ctp.reproduce(world);
+      assert.equal(2, ctp.getFishList(world).length);
+    });
+    it('fish will not reproduce when world is full', () => {
+      var fish1 = new ctp.Fish(0,0);
+      var fish2 = new ctp.Fish(0,1);
+      var fish3 = new ctp.Fish(1,0);
+      var fish4 = new ctp.Fish(1,1);
+      fish1.reproduce = 1;
+      var world = [[fish1, fish2],
+                   [fish3, fish4]];
+      ctp.reproduce(world);
+      assert.equal(4, ctp.getFishList(world).length);
+    });
+    it('shark will reproduce after 3 turn', () => {
+      var shark = new ctp.Shark(1,1);
+      shark.reproduce = 3;
+      var world = [[undefined, undefined],
+                   [undefined, shark]];
+      ctp.reproduce(world);
+      ctp.reproduce(world);
+      ctp.reproduce(world);
+      assert.equal(2, ctp.getSharkList(world).length);
     });
   });
 });

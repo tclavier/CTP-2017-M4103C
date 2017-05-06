@@ -1,5 +1,8 @@
 'use strict';
 
+const FISH_REPRODUCE=2;
+const SHARK_REPRODUCE=3;
+
 const createWorld = function (line, column) {
   var map = new Array(line);
   for (var i = 0; i < line; i++) {
@@ -139,9 +142,15 @@ const freeCell = function (world, line, column) {
   return cells[i];
 };
 
+const freeCellByPosition = function(world, position){
+  return freeCell(world, position[0], position[1]);
+}
+
 var Fish = function(line, column) {
   this.line = line;
   this.column = column;
+  this.reproduce = FISH_REPRODUCE;
+  this.gestation = 0;
   this.getPosition = function() {
     return [this.line, this.column];
   };
@@ -157,6 +166,8 @@ var Fish = function(line, column) {
 var Shark = function(line, column) {
   this.line = line;
   this.column = column;
+  this.reproduce = SHARK_REPRODUCE;
+  this.gestation = 0;
   this.getPosition = function() {
     return [this.line, this.column];
   };
@@ -184,7 +195,7 @@ const getRandomPosition = function(world) {
     return freeCell(world,line, row);
 }
 
-const addFish = function (world, fishes, random=false) {
+const addFish = function (world, not_used, random=false) {
   var new_position;
   if (random) {
     new_position = getRandomPosition(world)
@@ -195,9 +206,8 @@ const addFish = function (world, fishes, random=false) {
   if (new_position != undefined) {
     var fish = new Fish(new_position[0], new_position[1]);
     setElementInPosition(world, new_position, fish);
-    fishes.push(fish);
   }
-  return fishes;;
+  return getFishList(world);
 };
 
 const getElementInPosition = function (world, position) {
@@ -220,6 +230,10 @@ const getSharkList = function (world) {
 
 const getFishList = function (world) {
   return [].concat.apply([], world).filter(function(item){return item instanceof Fish})
+}
+
+const getEntities = function(world) {
+  return [].concat.apply([], world).filter(function(item){return item != undefined});
 }
 
 const eatFish = function (world, shark) {
@@ -248,12 +262,32 @@ const moveAllShark = function (world) {
 const step = function (world, fishes) {
   moveAllFish(world, fishes);
   moveAllShark(world);
+  reproduce(world);
   fishes = getFishList(world);
   resetScreen();
   afficheWorld(world);
   showFichNumber(fishes)
   showSharkNumber(world)
 };
+
+const reproduce = function(world) {
+  const entities = getEntities(world);
+  entities.forEach(function(entity){
+    const availablePosition = freeCellByPosition(world, entity.getPosition());
+    entity.gestation += 1;
+    if(availablePosition != undefined) {
+      if(entity.gestation % entity.reproduce == 0) {
+        var item;
+        if (entity instanceof Fish) {
+          item = new Fish(availablePosition[0], availablePosition[1]);
+        } else {
+          item = new Shark(availablePosition[0], availablePosition[1]);
+        }
+        setElementInPosition(world, availablePosition, item);
+      }
+    }
+  });
+}
 
 if (typeof window === 'undefined') {
   module.exports.createWorld = createWorld;;
@@ -269,6 +303,9 @@ if (typeof window === 'undefined') {
   module.exports.moveAllFish = moveAllFish;
   module.exports.moveAllShark = moveAllShark;
   module.exports.getElementInPosition = getElementInPosition;
+  module.exports.getFishList = getFishList;
+  module.exports.getSharkList = getSharkList;
+  module.exports.reproduce = reproduce;
 } else {
   window.createWorld = createWorld;
   window.afficheWorld = afficheWorld;
