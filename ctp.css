@@ -1,0 +1,28 @@
+td {
+  height: 32px;
+  width: 32px;
+}
+
+.water {
+  color: blue;
+}
+
+.shark {
+  background-image: url(shark.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow : hidden;
+	text-align : left;
+	text-indent : -2em;
+}
+
+.fish {
+  background-image: url(fish.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow : hidden;
+	text-align : left;
+	text-indent : -2em;
+}
